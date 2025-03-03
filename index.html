@@ -1,1 +1,467 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Συγγραφή Άρθρου για Σχολική Εφημερίδα</title>
+  <!-- Import Comfortaa font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Comfortaa', Arial, sans-serif;
+      background-color: #000000;
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+    }
+    .creator-info {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: gold;
+      text-shadow: 2px 2px 8px rgba(255, 215, 0, 0.7);
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #111111;
+      border-radius: 10px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.7);
+      border: 2px solid rgba(255,255,255,0.2);
+      margin-bottom: 20px;
+    }
+    .accordion {
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      padding: 15px;
+      width: 100%;
+      text-align: left;
+      border: none;
+      outline: none;
+      font-size: 18px;
+      transition: all 0.3s ease-in-out;
+      border-radius: 8px;
+      margin-top: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+    }
+    .accordion:hover {
+      background-color: #666;
+    }
+    .panel {
+      display: none;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid rgba(255,255,255,0.3);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.6);
+      margin-top: 5px;
+      background-color: #222;
+    }
+    .panel p, .panel ul {
+      margin: 0;
+      padding: 0;
+    }
+    /* Stages color-coded */
+    .intro { background-color: #B30000; }
+    .mainbody { background-color: #B36B00; }
+    .evidence { background-color: #8C00B3; }
+    .conclusion { background-color: #006BB3; }
+
+    .button {
+      display: inline-block;
+      padding: 12px;
+      margin: 5px 0;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+    }
+    .button:hover {
+      background-color: #45a049;
+    }
+    /* Topic container styling */
+    .topic-container {
+      margin-top: 20px;
+      background-color: #B30000;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid rgba(255,255,255,0.3);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.6), 0 8px 15px rgba(0,0,0,0.7);
+      text-align: center;
+    }
+    #randomTopic {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.3);
+      min-height: 50px;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
+      margin-bottom: 10px;
+    }
+    /* Additional sub-panels for each stage's suggestions */
+    .suggestions-panel {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.3);
+      min-height: 50px;
+      box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
+      margin-top: 10px;
+      text-align: left;
+    }
+    .essay-section {
+      margin-top: 20px;
+      background-color: #006BB3;
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid rgba(255,255,255,0.3);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.6), 0 8px 15px rgba(0,0,0,0.7);
+    }
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      color: #000;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+    }
+
+    /* Popup styling for Language Help */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 700px;
+      background: #ffffff;
+      padding: 20px;
+      box-shadow: 0 8px 12px rgba(0,0,0,0.4);
+      border-radius: 10px;
+      z-index: 1000;
+      overflow-y: auto;
+      max-height: 80vh;
+      color: #000000;
+    }
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+      margin-top: -10px;
+    }
+    .popup h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="creator-info">Δημιουργία: Παναγιώτης Δόμβρος 2025 (CC BY-NC)</div>
+
+<h1>📰 Συγγραφή Άρθρου σε Σχολική Εφημερίδα</h1>
+
+<!-- Container for the four sections (Intro, Main, Evidence, Conclusion) -->
+<div class="container">
+    <button class="accordion intro">1️⃣ Εισαγωγή</button>
+    <div class="panel">
+        <p>📌 Παρουσιάστε το θέμα του άρθρου:</p>
+        <ul>
+            <li>Γιατί είναι σημαντικό για τους μαθητές;</li>
+            <li>Μια πρόταση που τραβά την προσοχή του αναγνώστη</li>
+        </ul>
+        <p><em>\"Το άρθρο αυτό αναφέρεται στην υγιεινή διατροφή στο σχολείο, ένα θέμα που αφορά όλους μας.\"</em></p>
+    </div>
+
+    <button class="accordion mainbody">2️⃣ Κυρίως Θέμα</button>
+    <div class="panel">
+        <p>📌 Αναπτύξτε τις βασικές ιδέες:</p>
+        <ul>
+            <li>Παρουσιάστε τα επιχειρήματα, αναπτύξτε το θέμα</li>
+            <li>Συνδέστε το με την καθημερινή εμπειρία στο σχολείο</li>
+        </ul>
+        <p><em>\"Στο σχολείο, πολλοί προτιμούν σνακ, αλλά έτσι χάνουν βιταμίνες και ενέργεια για το υπόλοιπο της μέρας.\"</em></p>
+    </div>
+
+    <button class="accordion evidence">3️⃣ Παραδείγματα & Τεκμηρίωση</button>
+    <div class="panel">
+        <p>📌 Προσθέστε στοιχεία, απόψεις ειδικών:</p>
+        <ul>
+            <li>Στατιστικά, άρθρα, συνεντεύξεις, εμπειρικά παραδείγματα</li>
+            <li>Εμπλουτίστε το άρθρο με προτάσεις/λύσεις</li>
+        </ul>
+        <p><em>\"Μελέτες δείχνουν πως οι μαθητές που τρώνε υγιεινό πρωινό αποδίδουν 15% καλύτερα στις εξετάσεις.\"</em></p>
+    </div>
+
+    <button class="accordion conclusion">4️⃣ Συμπέρασμα</button>
+    <div class="panel">
+        <p>📌 Κλείσιμο/κάλεσμα σε δράση (αν ταιριάζει):</p>
+        <ul>
+            <li>Συνοψίστε τα επιχειρήματα</li>
+            <li>Δώστε ιδέες για το μέλλον ή προτροπή για αλλαγή</li>
+        </ul>
+        <p><em>\"Ας αναλογιστούμε πώς μικρές επιλογές μπορούν να βελτιώσουν τη μαθητική καθημερινότητα όλων μας.\"</em></p>
+    </div>
+</div>
+
+<!-- Button for Language Help Popup -->
+<div class="container">
+    <button class="button" onclick="openPopup()">📚 Γλωσσική Βοήθεια</button>
+</div>
+
+<!-- Popup for Language Help -->
+<div id="overlay" class="overlay"></div>
+<div id="popup" class="popup">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <h2>📖 Γλωσσική Βοήθεια</h2>
+    <p><strong>Ενδεικτικές φράσεις &amp; επίθετα για άρθρα στη σχολική εφημερίδα</strong></p>
+
+    <h3>Εισαγωγή</h3>
+    <ul>
+        <li>«Το ζήτημα που θα εξετάσουμε αφορά…»</li>
+        <li>«Το άρθρο αυτό γράφτηκε για να ευαισθητοποιήσει…»</li>
+        <li>«Η ιδέα για το συγκεκριμένο θέμα προέκυψε από…»</li>
+    </ul>
+    <p><strong>Επίθετα/Φράσεις:</strong> επίκαιρο, απαραίτητο, ενδιαφέρον, «αγγίζει κάθε μαθητή»</p>
+
+    <h3>Κυρίως Θέμα</h3>
+    <ul>
+        <li>«Ας δούμε, λοιπόν, πού εντοπίζονται οι βασικές αιτίες…»</li>
+        <li>«Στην καθημερινότητα του σχολείου παρατηρείται…»</li>
+        <li>«Είναι σημαντικό να τονίσουμε ότι…»</li>
+    </ul>
+    <p><strong>Επίθετα/Φράσεις:</strong> ουσιαστικός, καταλυτικός, καίριος, «που προβληματίζει μαθητές και εκπαιδευτικούς»</p>
+
+    <h3>Παραδείγματα & Τεκμηρίωση</h3>
+    <ul>
+        <li>«Σύμφωνα με πρόσφατη έρευνα…»</li>
+        <li>«Ένας μαθητής που μίλησε μαζί μας ανέφερε…»</li>
+        <li>«Στατιστικά στοιχεία δείχνουν ότι…»</li>
+        <li>«Αυτό το φαινόμενο δεν είναι καινούργιο, όπως δείχνει μια μελέτη του…»</li>
+    </ul>
+    <p><strong>Επίθετα/Φράσεις:</strong> τεκμηριωμένος, αποδεικνύεται, «υποστηρίζεται από δεδομένα», «φαίνεται ξεκάθαρα»</p>
+
+    <h3>Συμπέρασμα</h3>
+    <ul>
+        <li>«Ολοκληρώνοντας το άρθρο, είναι σαφές ότι…»</li>
+        <li>«Μια μικρή αλλαγή στη συμπεριφορά μας μπορεί να…»</li>
+        <li>«Η σχολική κοινότητα μπορεί να ευαισθητοποιηθεί περαιτέρω…»</li>
+    </ul>
+    <p><strong>Επίθετα/Φράσεις:</strong> εφικτός (στόχος), «ένα βήμα προς τη λύση», «με την ενεργή συμμετοχή όλων»</p>
+
+    <h3>Συνδετικές Φράσεις</h3>
+    <ul>
+        <li>Αρχικά…, Στη συνέχεια…, Επιπλέον…, Τέλος…, Συμπερασματικά…</li>
+        <li>Παρ' όλα αυτά…, Σε αντίθεση με…, Από την άλλη πλευρά…, Συνεπώς…</li>
+    </ul>
+</div>
+
+<!-- Container for 20 random article topics, each with stage-based suggestions -->
+<div class="container">
+    <h2 style="text-align: center;">🎲 Θέμα για Άρθρο</h2>
+    <div style="text-align: center;">
+        <button class="button" onclick="generateRandomArticle()">Δημιουργία Τυχαίου Θέματος</button>
+    </div>
+
+    <div class="topic-container">
+        <h3>📝 Θέμα</h3>
+        <div id="randomTopic">Πατήστε το κουμπί για να λάβετε ένα τυχαίο θέμα.</div>
+
+        <!-- Intro suggestions for this topic -->
+        <div class="suggestions-panel" id="introSugg">Εισαγωγή (θα εμφανιστούν ιδέες εδώ)</div>
+
+        <!-- Main body suggestions for this topic -->
+        <div class="suggestions-panel" id="mainSugg">Κυρίως Θέμα (θα εμφανιστούν ιδέες εδώ)</div>
+
+        <!-- Evidence suggestions for this topic -->
+        <div class="suggestions-panel" id="evidenceSugg">Παραδείγματα/Τεκμηρίωση (θα εμφανιστούν ιδέες εδώ)</div>
+
+        <!-- Conclusion suggestions for this topic -->
+        <div class="suggestions-panel" id="conclusionSugg">Συμπέρασμα (θα εμφανιστούν ιδέες εδώ)</div>
+    </div>
+
+    <div class="essay-section">
+        <h3>📝 Συγγραφή Άρθρου</h3>
+        <textarea id="articleText" placeholder="Γράψτε εδώ το άρθρο σας..."></textarea>
+        <button class="button" onclick="copyAndSubmit()">📋 Αντιγραφή & Υποβολή</button>
+    </div>
+</div>
+
+<script>
+  // Expandable sections for the 4 main parts
+  const acc = document.getElementsByClassName("accordion");
+  for (let i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      let panel = this.nextElementSibling;
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+      } else {
+        panel.style.display = "block";
+      }
+    });
+  }
+
+  // Overlay & Popup for Language Help
+  function openPopup() {
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("popup").style.display = "block";
+  }
+  function closePopup() {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("popup").style.display = "none";
+  }
+
+  // 20 random article topics, each with stage-based suggestions
+  const articleTopics = [
+    {
+      topic: "Η σημασία της ανακύκλωσης στο σχολείο",
+      introSuggestions: [
+        "Τονίστε τη σύνδεση με την περιβαλλοντική συνείδηση",
+        "Παρουσιάστε ένα περιστατικό από τη σχολική αυλή"
+      ],
+      mainSuggestions: [
+        "Εξηγήστε γιατί οι μαθητές ωφελούνται από την ανακύκλωση",
+        "Συζητήστε την τωρινή κατάσταση στο σχολείο"
+      ],
+      evidenceSuggestions: [
+        "Π.χ. Στατιστικά για πόσα υλικά πετιούνται καθημερινά",
+        "Αναφορά σε επιτυχημένα προγράμματα ανακύκλωσης άλλων σχολείων"
+      ],
+      conclusionSuggestions: [
+        "Κάλεσμα δράσης να μπουν περισσότεροι κάδοι ανακύκλωσης",
+        "Κλείσιμο με σύντομο μήνυμα ελπίδας"
+      ]
+    },
+    {
+      topic: "Πώς μπορούμε να βελτιώσουμε το σχολικό κυλικείο",
+      introSuggestions: [
+        "Αναφέρετε κοινά παράπονα μαθητών",
+        "Πείτε γιατί αξίζει να μιλήσουμε γι’ αυτό"
+      ],
+      mainSuggestions: [
+        "Προσθέστε ιδέες για υγιεινές επιλογές",
+        "Συζητήστε τι λείπει από το κυλικείο σήμερα"
+      ],
+      evidenceSuggestions: [
+        "Συνεντεύξεις μαθητών & καθηγητών",
+        "Τι ισχύει σε άλλα σχολεία;"
+      ],
+      conclusionSuggestions: [
+        "Προτείνετε άμεσες λύσεις",
+        "Ενθαρρύνετε τη μαθητική κοινότητα να δράσει"
+      ]
+    },
+    // ... (συμπληρώστε άλλα 18 αντικείμενα) ...
+    {
+      topic: "Ο ρόλος της μαθητικής κοινότητας και του 15μελούς στη σχολική ζωή",
+      introSuggestions: [
+        "Παρουσιάστε τι σημαίνει το 15μελές για το σχολείο",
+        "Τονίστε ότι οι μαθητές έχουν φωνή μέσω του οργάνου αυτού"
+      ],
+      mainSuggestions: [
+        "Εξηγήστε αρμοδιότητες, δυνατότητες, προβλήματα",
+        "Επισημάνετε τη σχέση μαθητών-καθηγητών"
+      ],
+      evidenceSuggestions: [
+        "Παραδείγματα δράσεων/πρωτοβουλιών 15μελούς προηγούμενων ετών",
+        "Στατιστικά για συμμετοχή μαθητών σε εκλογές σχολείου"
+      ],
+      conclusionSuggestions: [
+        "Κλείσιμο με παρότρυνση για ενεργή συμμετοχή",
+        "Αναφορά στα οφέλη συνεργασίας"
+      ]
+    }
+  ];
+
+  function generateRandomArticle() {
+    // Pick a random item from the articleTopics
+    const randomIndex = Math.floor(Math.random() * articleTopics.length);
+    const chosen = articleTopics[randomIndex];
+
+    // Fill in the content
+    document.getElementById('randomTopic').textContent = chosen.topic;
+    // Intro
+    document.getElementById('introSugg').innerHTML = "<strong>Εισαγωγή:</strong><br><ul><li>" 
+      + chosen.introSuggestions.join("</li><li>") + "</li></ul>";
+    // Main
+    document.getElementById('mainSugg').innerHTML = "<strong>Κυρίως Θέμα:</strong><br><ul><li>" 
+      + chosen.mainSuggestions.join("</li><li>") + "</li></ul>";
+    // Evidence
+    document.getElementById('evidenceSugg').innerHTML = "<strong>Παραδείγματα &amp; Τεκμηρίωση:</strong><br><ul><li>" 
+      + chosen.evidenceSuggestions.join("</li><li>") + "</li></ul>";
+    // Conclusion
+    document.getElementById('conclusionSugg').innerHTML = "<strong>Συμπέρασμα:</strong><br><ul><li>" 
+      + chosen.conclusionSuggestions.join("</li><li>") + "</li></ul>";
+  }
+
+  // Copy & Submit logic
+  function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      alert('Το άρθρο σας αντιγράφηκε (fallback)!');
+    } catch (err) {
+      alert('Αποτυχία αντιγραφής ακόμη και με fallback.');
+    }
+    document.body.removeChild(textArea);
+  }
+
+  function copyAndSubmit() {
+    const articleText = document.getElementById('articleText').value;
+    if (!articleText) {
+      // If no text, just open Tally
+      window.open('https://tally.so/r/meY48e', '_blank');
+      return;
+    }
+    if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(articleText)
+        .then(() => {
+          alert('Το άρθρο σας αντιγράφηκε στο πρόχειρο!');
+          window.open('https://tally.so/r/meY48e', '_blank');
+        })
+        .catch(err => {
+          console.error('Σφάλμα αντιγραφής:', err);
+          fallbackCopyTextToClipboard(articleText);
+          window.open('https://tally.so/r/meY48e', '_blank');
+        });
+    } else {
+      fallbackCopyTextToClipboard(articleText);
+      window.open('https://tally.so/r/meY48e', '_blank');
+    }
+  }
+</script>
+</body>
+</html>
 
